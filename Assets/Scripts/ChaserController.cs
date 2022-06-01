@@ -36,7 +36,6 @@ public class ChaserController : MonoBehaviour
         }
         else if ((distance >= chaseStopDistance) && _isChasing)
         {
-            Debug.Log("Stopped with distance: " + distance);
             _isChasing = false;
             _navMeshAgent.isStopped = true;
         }

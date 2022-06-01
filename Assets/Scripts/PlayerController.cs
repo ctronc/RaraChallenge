@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float playerSpeed;
     [SerializeField] private float jumpSpeed;
+    
     private PlayerInput _playerInput;
     private CharacterController _characterController;
     private Vector2 _currentMovementInput;

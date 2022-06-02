@@ -52,18 +52,17 @@ public class TurretController : MonoBehaviour
 
     private void LaunchProjectile()
     {
-        GameObject projectile = ProjectilePool.SharedInstance.GetPooledObject(); 
+        GameObject projectile = ProjectilePool.SharedInstance.GetPooledObject();
         if (projectile != null)
         {
             _projectileController = projectile.GetComponent<ProjectileController>();
-            
+
             projectile.transform.position = new Vector3(_myTransform.position.x, _cannonPos.y, _cannonPos.z + 0.2f);
             projectile.transform.rotation = _myTransform.rotation;
             
+            _projectileController.ActivateProjectile();
             _projectileController.SetProjectileDamage(projectileDamage);
             _projectileController.SetProjectileSpeed(projectileSpeed);
-            
-            projectile.SetActive(true);
         }
     }
 

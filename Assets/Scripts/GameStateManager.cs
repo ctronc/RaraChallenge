@@ -11,10 +11,16 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameStateText;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Button playAgainButton;
+    [SerializeField] private Button playModeButton;
+    [SerializeField] private Button buildModeButton;
+    [SerializeField] private GameObject buildModeUI;
+    [SerializeField] private GameObject userLevel;
+    
     private int _playerScore;
     
     public delegate void GameStateAction();
     public static event GameStateAction OnGameReset;
+    public static event GameStateAction OnLevelClear;
     
     enum GameStates {Build, Play, Win, GameOver}
 
@@ -47,9 +53,16 @@ public class GameStateManager : MonoBehaviour
     public void EnterBuildMode()
     {
         _gameState = GameStates.Build;
+        
+        buildModeUI.SetActive(true);
+        buildModeButton.enabled = false;
+        playModeButton.enabled = true;
+        
         gameModeText.text = "Mode: Build";
+        
         Time.timeScale = 0;
         ResetGameState();
+        
         // Enable object placing
 
     }
@@ -58,13 +71,25 @@ public class GameStateManager : MonoBehaviour
     {
         // Check if there's a player and a flag at least
         _gameState = GameStates.Play;
+        
+        buildModeUI.SetActive(false);
+        buildModeButton.enabled = true;
+        playModeButton.enabled = false;
+        
         gameModeText.text = "Mode: Play";
+        
         Time.timeScale = 1;
     }
 
-    private void ClearLevel()
+    public void ClearLevel()
     {
-        // clear level
+        foreach (Transform childTransform in userLevel.transform)
+        {
+            Destroy(childTransform.gameObject);
+        }
+        
+        // Destroy pooled projectiles
+        OnLevelClear?.Invoke();
     }
 
     private void PlayerWin()

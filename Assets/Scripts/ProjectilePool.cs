@@ -10,6 +10,8 @@ public class ProjectilePool : MonoBehaviour
     [SerializeField] private GameObject objectToPool;
     [SerializeField] private int amountToPool;
 
+    private GameObject _pooledObjectsContainer;
+
     private void OnEnable()
     {
         GameStateManager.OnGameReset += ResetState;
@@ -23,6 +25,7 @@ public class ProjectilePool : MonoBehaviour
     private void Awake()
     {
         SharedInstance = this;
+        _pooledObjectsContainer = GameObject.Find("PooledObjects");
     }
 
     void Start()
@@ -31,8 +34,8 @@ public class ProjectilePool : MonoBehaviour
         GameObject tmp;
         for(int i = 0; i < amountToPool; i++)
         {
-            tmp = Instantiate(objectToPool);
-            tmp.SetActive(false);
+            tmp = Instantiate(objectToPool, _pooledObjectsContainer.transform, true);
+            tmp.transform.GetChild(0).gameObject.SetActive(false);
             pooledObjects.Add(tmp);
         }
     }
@@ -41,7 +44,7 @@ public class ProjectilePool : MonoBehaviour
     {
         for(int i = 0; i < amountToPool; i++)
         {
-            if(!pooledObjects[i].activeInHierarchy)
+            if(!pooledObjects[i].transform.GetChild(0).gameObject.activeInHierarchy)
             {
                 return pooledObjects[i];
             }
@@ -53,7 +56,7 @@ public class ProjectilePool : MonoBehaviour
     {
         foreach (GameObject go in pooledObjects)
         {
-            go.SetActive(false);
+            go.transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 

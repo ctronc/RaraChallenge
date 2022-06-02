@@ -4,15 +4,39 @@ using UnityEngine;
 
 public class ProjectilePool : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static ProjectilePool SharedInstance;
+    [SerializeField] private List<GameObject> pooledObjects;
+    [SerializeField] private GameObject objectToPool;
+    [SerializeField] private int amountToPool;
+
+    private void Awake()
     {
-        
+        SharedInstance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        pooledObjects = new List<GameObject>();
+        GameObject tmp;
+        for(int i = 0; i < amountToPool; i++)
+        {
+            tmp = Instantiate(objectToPool);
+            tmp.SetActive(false);
+            pooledObjects.Add(tmp);
+        }
     }
+    
+    public GameObject GetPooledObject()
+    {
+        for(int i = 0; i < amountToPool; i++)
+        {
+            if(!pooledObjects[i].activeInHierarchy)
+            {
+                return pooledObjects[i];
+            }
+        }
+        return null;
+    }
+
+
 }

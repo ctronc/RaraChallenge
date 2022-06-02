@@ -54,6 +54,9 @@ public class WandererController : MonoBehaviour
 
     private void ResetState()
     {
+        _navMeshAgent.isStopped = true;
+        _navMeshAgent.enabled = false;
         transform.position = _startingPosition;
+        _navMeshAgent.enabled = true;
     }
 }

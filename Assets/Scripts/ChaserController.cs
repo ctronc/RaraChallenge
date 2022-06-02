@@ -56,6 +56,10 @@ public class ChaserController : MonoBehaviour
 
     private void ResetState()
     {
-        gameObject.transform.position = _startingPosition;
+        _isChasing = false;
+        _navMeshAgent.isStopped = true;
+        _navMeshAgent.enabled = false;
+        transform.position = _startingPosition;
+        _navMeshAgent.enabled = true;
     }
 }

@@ -69,7 +69,10 @@ public class TurretController : MonoBehaviour
 
     private void ResetState()
     {
-        StopCoroutine(_shootCoroutine);
-        _shootCoroutine = StartCoroutine(Shoot());
+        if (_shootCoroutine != null)
+        {
+            StopCoroutine(_shootCoroutine);
+            _shootCoroutine = StartCoroutine(Shoot());
+        }
     }
 }

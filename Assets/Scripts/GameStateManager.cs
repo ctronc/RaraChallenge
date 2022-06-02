@@ -27,6 +27,7 @@ public class GameStateManager : MonoBehaviour
         _playerScore = 0; // has to be set when entering play mode, not here
         _gameState = GameStates.Build;
         playAgainButton.gameObject.SetActive(false);
+        EnterBuildMode();
     }
 
     private void SubscribeToEvents()
@@ -41,6 +42,29 @@ public class GameStateManager : MonoBehaviour
         PlayerState.OnPlayerWin -= PlayerWin;
         PlayerState.OnPlayerDeath -= GameOver;
         CoinController.OnCoinTouch -= IncreaseScore;
+    }
+
+    public void EnterBuildMode()
+    {
+        _gameState = GameStates.Build;
+        gameModeText.text = "Mode: Build";
+        Time.timeScale = 0;
+        ResetGameState();
+        // Enable object placing
+
+    }
+
+    public void EnterPlayMode()
+    {
+        // Check if there's a player and a flag at least
+        _gameState = GameStates.Play;
+        gameModeText.text = "Mode: Play";
+        Time.timeScale = 1;
+    }
+
+    private void ClearLevel()
+    {
+        // clear level
     }
 
     private void PlayerWin()
@@ -77,15 +101,20 @@ public class GameStateManager : MonoBehaviour
         {
             Time.timeScale = 1;
             _gameState = GameStates.Play;
-            _playerScore = 0;
-
-            gameStateText.text = "";
             gameModeText.text = "Mode: Play";
-            scoreText.text = "Score: " + _playerScore;
-            playAgainButton.gameObject.SetActive(false);
-
-            OnGameReset?.Invoke();
+            
+            ResetGameState();
         }
+    }
+
+    private void ResetGameState()
+    {
+        _playerScore = 0;
+        gameStateText.text = "";
+        scoreText.text = "Score: " + _playerScore;
+        playAgainButton.gameObject.SetActive(false);
+
+        OnGameReset?.Invoke();
     }
 
     private void OnDisable()

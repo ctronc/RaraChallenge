@@ -8,6 +8,9 @@ TagManager:
   - NPC
   - Coin
   - Flag
+  - Chaser
+  - Wanderer
+  - Projectile
   layers:
   - Default
   - TransparentFX

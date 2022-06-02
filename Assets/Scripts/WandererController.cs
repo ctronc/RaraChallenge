@@ -5,12 +5,26 @@ using UnityEngine.AI;
 
 public class WandererController : MonoBehaviour
 {
+    [SerializeField] private int wandererDamage;
     [SerializeField] private float wanderRadius;
+    
     private NavMeshAgent _navMeshAgent;
+    private Vector3 _startingPosition;
 
+    private void OnEnable()
+    {
+        GameStateManager.OnGameReset += ResetState;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
+    }    
+    
     void Awake()
     {
-        _navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _startingPosition = transform.position;
     }
 
     void Start()
@@ -36,5 +50,10 @@ public class WandererController : MonoBehaviour
         NavMesh.SamplePosition(randDirection, out var navHit, dist, 1);
 
         return navHit.position;
+    }
+
+    private void ResetState()
+    {
+        transform.position = _startingPosition;
     }
 }

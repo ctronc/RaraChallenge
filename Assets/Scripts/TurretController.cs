@@ -6,6 +6,7 @@ using UnityEngine;
 public class TurretController : MonoBehaviour
 {
     [SerializeField] private GameObject cannonGameObject;
+    [SerializeField] private int projectileDamage;
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float startDelay;
     [SerializeField] private float firingRate;
@@ -13,11 +14,22 @@ public class TurretController : MonoBehaviour
     private ProjectileController _projectileController;
     private Transform _myTransform;
     private Vector3 _cannonPos;
+    private Coroutine _shootCoroutine;
+    
+    private void OnEnable()
+    {
+        GameStateManager.OnGameReset += ResetState;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
+    }
 
     private void Awake()
     {
         _myTransform = transform;
-        _cannonPos = cannonGameObject.transform.position; 
+        _cannonPos = cannonGameObject.transform.position;
     }
     private void Start()
     {
@@ -26,7 +38,7 @@ public class TurretController : MonoBehaviour
 
     private void EnableGameplay()
     {
-        StartCoroutine(Shoot());
+        _shootCoroutine = StartCoroutine(Shoot());
     }
     
     IEnumerator Shoot() {
@@ -44,10 +56,20 @@ public class TurretController : MonoBehaviour
         if (projectile != null)
         {
             _projectileController = projectile.GetComponent<ProjectileController>();
+            
             projectile.transform.position = new Vector3(_myTransform.position.x, _cannonPos.y, _cannonPos.z + 0.2f);
             projectile.transform.rotation = _myTransform.rotation;
+            
+            _projectileController.SetProjectileDamage(projectileDamage);
             _projectileController.SetProjectileSpeed(projectileSpeed);
+            
             projectile.SetActive(true);
         }
+    }
+
+    private void ResetState()
+    {
+        StopCoroutine(_shootCoroutine);
+        _shootCoroutine = StartCoroutine(Shoot());
     }
 }

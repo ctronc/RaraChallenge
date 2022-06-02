@@ -7,17 +7,30 @@ using UnityEngine.AI;
 public class ChaserController : MonoBehaviour
 {
     private GameObject _targetObject;
+    [SerializeField] private int chaserDamage;
     [SerializeField] private float chaseStartDistance;
     [SerializeField] private float chaseStopDistance;
 
+    private Vector3 _startingPosition;
     private NavMeshAgent _navMeshAgent;
     private bool _isChasing;
+    
+    private void OnEnable()
+    {
+        GameStateManager.OnGameReset += ResetState;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
+    }
 
     private void Awake()
     {
         _targetObject = GameObject.Find("Player");
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _isChasing = false;
+        _startingPosition = transform.position;
     }
     
     void Update()
@@ -39,5 +52,10 @@ public class ChaserController : MonoBehaviour
             _isChasing = false;
             _navMeshAgent.isStopped = true;
         }
+    }
+
+    private void ResetState()
+    {
+        gameObject.transform.position = _startingPosition;
     }
 }

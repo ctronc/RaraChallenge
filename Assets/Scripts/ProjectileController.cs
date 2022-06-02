@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-    [SerializeField] private float _projectileSpeed = 1;
-
+    private int _projectileDamage;
+    private float _projectileSpeed;
     
     void Update()
     {
@@ -18,10 +18,19 @@ public class ProjectileController : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        else if (other.CompareTag("Player"))
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void SetProjectileSpeed(float speed)
     {
         _projectileSpeed = speed;
+    }
+
+    public void SetProjectileDamage(int damage)
+    {
+        _projectileDamage = damage;
     }
 }

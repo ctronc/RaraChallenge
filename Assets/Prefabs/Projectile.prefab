@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffa3a3d7ced14aaebc4ed9fdaf402e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectileSpeed: 1
 --- !u!54 &6156429523281009473
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -77,7 +76,7 @@ GameObject:
   - component: {fileID: 9186699359214901386}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProjectilePool : MonoBehaviour
 {
@@ -9,6 +10,16 @@ public class ProjectilePool : MonoBehaviour
     [SerializeField] private GameObject objectToPool;
     [SerializeField] private int amountToPool;
 
+    private void OnEnable()
+    {
+        GameStateManager.OnGameReset += ResetState;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
+    }
+    
     private void Awake()
     {
         SharedInstance = this;
@@ -36,6 +47,14 @@ public class ProjectilePool : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void ResetState()
+    {
+        foreach (GameObject go in pooledObjects)
+        {
+            go.SetActive(false);
+        }
     }
 
 

@@ -23,6 +23,7 @@ public class ProjectilePool : MonoBehaviour
 
     void Start()
     {
+        // Instantiates amountToPool amount of projectiles
         pooledObjects = new List<GameObject>();
         GameObject tmpGo;
         for(int i = 0; i < amountToPool; i++)
@@ -35,6 +36,7 @@ public class ProjectilePool : MonoBehaviour
     
     public GameObject GetPooledObject()
     {
+        // Gets the pooled object whose mesh GameObject is disabled
         for(int i = 0; i < amountToPool; i++)
         {
             if(!pooledObjects[i].transform.GetChild(0).gameObject.activeInHierarchy)

@@ -12,10 +12,10 @@ public class CoinController : MonoBehaviour
     
     private void Awake()
     {
-        // sets spawn y position for transform
+        // Sets spawn y position for transform
         transform.position = new Vector3(transform.position.x, 1, transform.position.z);
         
-        // gets child GameObject that has the coin mesh
+        // Gets child GameObject that has the coin mesh
         _coinObject = gameObject.transform.GetChild(0).gameObject;
     }
     
@@ -28,6 +28,8 @@ public class CoinController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            // Emit OnCoinTouch event to increase score and
+            // disable the coin mesh GameObject
             OnCoinTouch?.Invoke();
             _coinObject.SetActive(false);
         }

@@ -7,7 +7,7 @@ public class FlagController : MonoBehaviour
 {
     private void Awake()
     {
-        // sets spawn y position for transform
+        // Sets spawn y position for transform
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 }

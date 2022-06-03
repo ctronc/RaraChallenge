@@ -30,13 +30,14 @@ public class GameStateManager : MonoBehaviour
     
     private void Awake()
     {
-        _gameState = GameState.Build;
+        // Game starts in build mode
         playAgainButton.gameObject.SetActive(false);
         EnterBuildMode();
     }
 
     private void OnEnable()
     {
+        // Listen to events from player and coins
         PlayerState.OnPlayerWin += PlayerWin;
         PlayerState.OnPlayerDeath += GameOver;
         CoinController.OnCoinTouch += IncreaseScore;
@@ -44,6 +45,7 @@ public class GameStateManager : MonoBehaviour
 
     public void EnterBuildMode()
     {
+        // Set the state to build mode
         _gameState = GameState.Build;
         OnBuildMode?.Invoke();
         
@@ -53,7 +55,10 @@ public class GameStateManager : MonoBehaviour
         
         gameModeText.text = "Mode: Build";
         
+        // Pauses the game
         Time.timeScale = 0;
+        
+        // Reset all entities to their initial state
         ResetGameState();
         
         Debug.Log("Build mode activated");
@@ -61,9 +66,11 @@ public class GameStateManager : MonoBehaviour
 
     public void EnterPlayMode()
     {
+        // Set the state to play mode
         _gameState = GameState.Play;
-        _playerScore = 0;
         OnPlayMode?.Invoke();
+        
+        _playerScore = 0;
         
         buildModeUI.SetActive(false);
         buildModeButton.enabled = true;
@@ -71,6 +78,7 @@ public class GameStateManager : MonoBehaviour
         
         gameModeText.text = "Mode: Play";
         
+        // unpauses the game
         Time.timeScale = 1;
         
         Debug.Log("Play mode activated");
@@ -78,17 +86,19 @@ public class GameStateManager : MonoBehaviour
 
     public void ClearLevel()
     {
+        // For clear level button, destroys all GameObjects children of UserLevel
         foreach (Transform childTransform in userLevel.transform)
         {
             Destroy(childTransform.gameObject);
         }
         
-        // used to destroy pooled projectiles and clear player
+        // Used to destroy pooled projectiles and hide player mesh
         OnLevelClear?.Invoke();
     }
 
     private void PlayerWin()
     {
+        // Called on player win
         if (_gameState != GameState.Win)
         {
             _gameState = GameState.Win;
@@ -100,6 +110,7 @@ public class GameStateManager : MonoBehaviour
 
     private void GameOver()
     {
+        // Called when player dies
         if (_gameState != GameState.GameOver)
         {
             _gameState = GameState.GameOver;
@@ -111,12 +122,15 @@ public class GameStateManager : MonoBehaviour
 
     private void IncreaseScore()
     {
+        // Increase score when player touches a coin
         _playerScore += 1;
         scoreText.text = "Score: " + _playerScore;
     }
 
     public void Retry()
     {
+        // Method for retry button
+        // Play again the same level after winning on losing.
         if (_gameState != GameState.Play)
         {
             Time.timeScale = 1;

@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
         _playerInput = new PlayerInput();
         _characterController = GetComponent<CharacterController>();
         
+        // Callbacks for new player input system
         _playerInput.CharacterControls.Move.started += OnMovementInput;
         _playerInput.CharacterControls.Move.performed += OnMovementInput;
         _playerInput.CharacterControls.Move.canceled += OnMovementInput;
@@ -39,18 +40,22 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
+        // Pull player to the ground if its not grounded
         _ySpeed += Physics.gravity.y * Time.deltaTime;
 
         if (_characterController.isGrounded)
         {
+            // Just to be safe, keep pulling a bit in order to keep player grounded
             _ySpeed = -0.5f;
-            
+
+            // Player jump
             if (_isJumpPressed)
             {
                 _ySpeed = jumpSpeed;
             }
         }
 
+        // Apply WASD movement and jump to character controller
         Vector3 currentMovement = _currentMovement * playerSpeed;
         currentMovement.y = _ySpeed;
         _characterController.Move(currentMovement * Time.deltaTime);

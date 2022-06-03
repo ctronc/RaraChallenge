@@ -13,7 +13,7 @@ public class WandererController : MonoBehaviour
 
     void Awake()
     {
-        // sets spawn y position for transform
+        // Sets spawn y position for transform
         transform.position = new Vector3(transform.position.x, 1, transform.position.z);
         
         _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -42,6 +42,7 @@ public class WandererController : MonoBehaviour
     
     public static Vector3 RandomNavSphere(Vector3 origin, float dist)
     {
+        // Gets a random point in the navmesh
         Vector3 randDirection = Random.insideUnitSphere * dist;
 
         randDirection += origin;

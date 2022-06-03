@@ -35,6 +35,7 @@ public class ClickSpawner : MonoBehaviour
     
     private void OnEnable()
     {
+        // Listen to these events for enabling / disabling object placement
         GameStateManager.OnBuildMode += SetBuildMode;
         GameStateManager.OnPlayMode += SetPlayMode;
     }
@@ -56,6 +57,7 @@ public class ClickSpawner : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit) && hit.transform.CompareTag("Floor"))
             {
+                // Spawn selected prefab on click coordinates
                 if (_entityToSpawn != null && _playerSelected == false)
                 {
                     GameObject tmpGo;
@@ -63,6 +65,7 @@ public class ClickSpawner : MonoBehaviour
                     tmpGo.transform.parent = userLevel.transform;
                 }
 
+                // Player doesn't need instantiating, just moving to the click coordinates
                 if (_playerSelected)
                 { 
                    _playerState.SetPlayerPosition(hit.point);
@@ -74,6 +77,8 @@ public class ClickSpawner : MonoBehaviour
 
     public void EntitySelector(string selectedEntity)
     {
+        // Method for UI buttons in build mode.
+        // Assigns selected entity prefab to _entityToSpawn variable
         _entityToSpawn = selectedEntity switch
         {
             "coin" => coinPrefab,

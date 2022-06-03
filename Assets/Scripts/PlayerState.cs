@@ -26,6 +26,7 @@ public class PlayerState : MonoBehaviour
     
     private void OnEnable()
     {
+        // Listen for reset gameplay state clear level events
         GameStateManager.OnGameReset += ResetState;
         GameStateManager.OnLevelClear += ClearPlayer;
     }
@@ -34,6 +35,7 @@ public class PlayerState : MonoBehaviour
     {
         if (playerHealth <= 0 && _hasDied == false)
         {
+            // Player death handling. Emits player death event.
             Debug.Log("Game Over");
             OnPlayerDeath?.Invoke();
             _hasDied = true;
@@ -42,6 +44,7 @@ public class PlayerState : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        // Handles damage to the player and win condition when touching the flag
         if (playerHealth > 0)
         {
             int enemyDamage;
@@ -84,17 +87,22 @@ public class PlayerState : MonoBehaviour
 
     public void DisplayPlayer()
     {
+        // Activates player mesh GameObject
         transform.GetChild(0).gameObject.SetActive(true);
     }
     private void ClearPlayer()
     {
+        // Only set the player mesh GameObject as inactive, not the parent GameObject
         transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public void SetPlayerPosition(Vector3 newPos)
     {
+        // Used for placing the player in build mode
         Vector3 playerPosition = new Vector3(newPos.x, transform.position.y, newPos.z);
         
+        // Character controller needs to be disabled in order to manually move the player
+        // to another position
         _characterController.enabled = false;
         transform.position = playerPosition;
         _startingPosition = playerPosition;
@@ -103,6 +111,7 @@ public class PlayerState : MonoBehaviour
 
     private void ResetState()
     {
+        // Reset entity state for retrying or entering build mode
         _characterController.enabled = false;
         transform.position = _startingPosition;
         _characterController.enabled = true;

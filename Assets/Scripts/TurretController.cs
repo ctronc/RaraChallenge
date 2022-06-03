@@ -20,7 +20,7 @@ public class TurretController : MonoBehaviour
     
     private void Awake()
     {
-        // sets spawn y position for transform
+        // Sets spawn y position for transform
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         
         _myTransform = transform;
@@ -46,9 +46,11 @@ public class TurretController : MonoBehaviour
     }
     
     IEnumerator Shoot() {
+        // Starting shooting delay
         yield return new WaitForSeconds(startDelay);
  
         while (true) {
+            // Shoots projectile at firingRate interval
             LaunchProjectile();
             yield return new WaitForSeconds(firingRate);
         }
@@ -56,6 +58,7 @@ public class TurretController : MonoBehaviour
 
     private void LaunchProjectile()
     {
+        // Gets projectile from pool
         GameObject projectile = _projectilePool.GetPooledObject();
         if (projectile != null)
         {
@@ -64,6 +67,7 @@ public class TurretController : MonoBehaviour
             projectile.transform.position = new Vector3(_myTransform.position.x, _cannonPos.y, _cannonPos.z + 0.2f);
             projectile.transform.rotation = _myTransform.rotation;
             
+            // Assigns properties to the obtained projectile
             _projectileController.ActivateProjectile();
             _projectileController.SetProjectileDamage(projectileDamage);
             _projectileController.SetProjectileSpeed(projectileSpeed);

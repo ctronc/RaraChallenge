@@ -16,16 +16,19 @@ public class ProjectileController : MonoBehaviour
     
     private void OnEnable()
     {
+        // Listen to OnLevelClear event to destroy pooled projectiles
         GameStateManager.OnLevelClear += DestroySelf;
     }
 
     void Update()
     {
+        // Move projectile forward
         transform.Translate(Vector3.forward * Time.deltaTime * _projectileSpeed);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // Deactivate projectile if it hits a wall or the player
         if (other.CompareTag("Wall"))
         {
             DeactivateProjectile();
@@ -43,6 +46,7 @@ public class ProjectileController : MonoBehaviour
 
     public void DeactivateProjectile()
     {
+        // Deactivates the mesh GameObject, not the parent
         _projectileGo.SetActive(false);
     }
 

@@ -12,6 +12,7 @@ public class TurretController : MonoBehaviour
     [SerializeField] private float firingRate;
     
     private ProjectileController _projectileController;
+    private ProjectilePool _projectilePool;
     private Transform _myTransform;
     private Vector3 _cannonPos;
     private Coroutine _shootCoroutine;
@@ -23,6 +24,7 @@ public class TurretController : MonoBehaviour
         
         _myTransform = transform;
         _cannonPos = cannonGameObject.transform.position;
+        _projectilePool = GetComponent<ProjectilePool>();
     }
     
     private void OnEnable()
@@ -51,7 +53,7 @@ public class TurretController : MonoBehaviour
 
     private void LaunchProjectile()
     {
-        GameObject projectile = ProjectilePool.SharedInstance.GetPooledObject();
+        GameObject projectile = _projectilePool.GetPooledObject();
         if (projectile != null)
         {
             _projectileController = projectile.GetComponent<ProjectileController>();

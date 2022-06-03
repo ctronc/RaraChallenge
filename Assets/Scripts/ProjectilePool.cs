@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ProjectilePool : MonoBehaviour
 {
-    public static ProjectilePool SharedInstance;
     [SerializeField] private List<GameObject> pooledObjects;
     [SerializeField] private GameObject objectToPool;
     [SerializeField] private int amountToPool;
@@ -14,7 +13,6 @@ public class ProjectilePool : MonoBehaviour
 
     private void Awake()
     {
-        SharedInstance = this;
         _pooledObjectsContainer = GameObject.Find("PooledObjects");
     }
     

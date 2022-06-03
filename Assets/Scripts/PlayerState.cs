@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerState : MonoBehaviour
 {
     [SerializeField] private int playerHealth;
     private CharacterController _characterController;
-    
-    // replace with scriptableobject
+
+    // replace with scriptableobject!!
     private int _projectileDamage = 20;
     private int _wandererDamage = 100;
     private int _chaserDamage = 100;
@@ -92,17 +93,14 @@ public class PlayerState : MonoBehaviour
         return _playerDisplayed;
     }
 
-    public void SetPlayerPosition(Vector3 newPosition)
+    public void SetPlayerPosition(Vector3 newPos)
     {
+        Vector3 playerPosition = new Vector3(newPos.x, transform.position.y, newPos.z);
+        
         _characterController.enabled = false;
-        transform.position = newPosition;
-        _startingPosition = newPosition;
+        transform.position = playerPosition;
+        _startingPosition = playerPosition;
         _characterController.enabled = true;
-    }
-
-    public void SetPlayerYPosition()
-    {
-        transform.position = new Vector3(transform.position.x, 1, transform.position.z);
     }
 
     private void ResetState()

@@ -63,7 +63,6 @@ public class ClickSpawner : MonoBehaviour
                 if (_playerSelected)
                 { 
                    _playerState.SetPlayerPosition(hit.point);
-                   _playerState.SetPlayerYPosition();
                    _playerState.DisplayPlayer();
                 }
             }

@@ -12,31 +12,26 @@ public class ProjectilePool : MonoBehaviour
 
     private GameObject _pooledObjectsContainer;
 
-    private void OnEnable()
-    {
-        GameStateManager.OnGameReset += ResetState;
-    }
-
-    private void OnDisable()
-    {
-        GameStateManager.OnGameReset -= ResetState;
-    }
-    
     private void Awake()
     {
         SharedInstance = this;
         _pooledObjectsContainer = GameObject.Find("PooledObjects");
     }
+    
+    private void OnEnable()
+    {
+        GameStateManager.OnGameReset += ResetState;
+    }
 
     void Start()
     {
         pooledObjects = new List<GameObject>();
-        GameObject tmp;
+        GameObject tmpGo;
         for(int i = 0; i < amountToPool; i++)
         {
-            tmp = Instantiate(objectToPool, _pooledObjectsContainer.transform, true);
-            tmp.transform.GetChild(0).gameObject.SetActive(false);
-            pooledObjects.Add(tmp);
+            tmpGo = Instantiate(objectToPool, _pooledObjectsContainer.transform, true);
+            tmpGo.transform.GetChild(0).gameObject.SetActive(false);
+            pooledObjects.Add(tmpGo);
         }
     }
     
@@ -58,6 +53,11 @@ public class ProjectilePool : MonoBehaviour
         {
             go.transform.GetChild(0).gameObject.SetActive(false);
         }
+    }
+    
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
     }
 
 

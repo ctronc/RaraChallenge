@@ -11,20 +11,18 @@ public class WandererController : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private Vector3 _startingPosition;
 
+    void Awake()
+    {
+        // sets spawn y position for transform
+        transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+        
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _startingPosition = transform.position;
+    }
+    
     private void OnEnable()
     {
         GameStateManager.OnGameReset += ResetState;
-    }
-
-    private void OnDisable()
-    {
-        GameStateManager.OnGameReset -= ResetState;
-    }    
-    
-    void Awake()
-    {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
-        _startingPosition = transform.position;
     }
 
     void Start()
@@ -59,4 +57,9 @@ public class WandererController : MonoBehaviour
         transform.position = _startingPosition;
         _navMeshAgent.enabled = true;
     }
+    
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
+    }   
 }

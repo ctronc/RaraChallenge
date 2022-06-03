@@ -21,17 +21,18 @@ public class GameStateManager : MonoBehaviour
     public delegate void GameStateAction();
     public static event GameStateAction OnGameReset;
     public static event GameStateAction OnLevelClear;
+    public static event GameStateAction OnBuildMode;
+    public static event GameStateAction OnPlayMode;
     
-    enum GameStates {Build, Play, Win, GameOver}
-
-    private GameStates _gameState;
+    enum GameState {Build, Play, Win, GameOver}
+    private GameState _gameState;
 
     
     private void Awake()
     {
         SubscribeToEvents();
         _playerScore = 0; // has to be set when entering play mode, not here
-        _gameState = GameStates.Build;
+        _gameState = GameState.Build;
         playAgainButton.gameObject.SetActive(false);
         EnterBuildMode();
     }
@@ -52,7 +53,8 @@ public class GameStateManager : MonoBehaviour
 
     public void EnterBuildMode()
     {
-        _gameState = GameStates.Build;
+        _gameState = GameState.Build;
+        OnBuildMode?.Invoke();
         
         buildModeUI.SetActive(true);
         buildModeButton.enabled = false;
@@ -70,7 +72,8 @@ public class GameStateManager : MonoBehaviour
     public void EnterPlayMode()
     {
         // Check if there's a player and a flag at least
-        _gameState = GameStates.Play;
+        _gameState = GameState.Play;
+        OnPlayMode?.Invoke();
         
         buildModeUI.SetActive(false);
         buildModeButton.enabled = true;
@@ -88,15 +91,15 @@ public class GameStateManager : MonoBehaviour
             Destroy(childTransform.gameObject);
         }
         
-        // Destroy pooled projectiles
+        // used to destroy pooled projectiles and clear player
         OnLevelClear?.Invoke();
     }
 
     private void PlayerWin()
     {
-        if (_gameState != GameStates.Win)
+        if (_gameState != GameState.Win)
         {
-            _gameState = GameStates.Win;
+            _gameState = GameState.Win;
             gameStateText.text = "You win!";
             Time.timeScale = 0;
             playAgainButton.gameObject.SetActive(true);
@@ -105,9 +108,9 @@ public class GameStateManager : MonoBehaviour
 
     private void GameOver()
     {
-        if (_gameState != GameStates.GameOver)
+        if (_gameState != GameState.GameOver)
         {
-            _gameState = GameStates.GameOver;
+            _gameState = GameState.GameOver;
             gameStateText.text = "Game over :(";
             Time.timeScale = 0;
             playAgainButton.gameObject.SetActive(true);
@@ -122,10 +125,10 @@ public class GameStateManager : MonoBehaviour
 
     public void PlayAgain()
     {
-        if (_gameState != GameStates.Play)
+        if (_gameState != GameState.Play)
         {
             Time.timeScale = 1;
-            _gameState = GameStates.Play;
+            _gameState = GameState.Play;
             gameModeText.text = "Mode: Play";
             
             ResetGameState();

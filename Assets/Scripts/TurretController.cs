@@ -16,21 +16,20 @@ public class TurretController : MonoBehaviour
     private Vector3 _cannonPos;
     private Coroutine _shootCoroutine;
     
+    private void Awake()
+    {
+        // sets spawn y position for transform
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        
+        _myTransform = transform;
+        _cannonPos = cannonGameObject.transform.position;
+    }
+    
     private void OnEnable()
     {
         GameStateManager.OnGameReset += ResetState;
     }
-
-    private void OnDisable()
-    {
-        GameStateManager.OnGameReset -= ResetState;
-    }
-
-    private void Awake()
-    {
-        _myTransform = transform;
-        _cannonPos = cannonGameObject.transform.position;
-    }
+    
     private void Start()
     {
         EnableGameplay();
@@ -73,5 +72,10 @@ public class TurretController : MonoBehaviour
             StopCoroutine(_shootCoroutine);
             _shootCoroutine = StartCoroutine(Shoot());
         }
+    }
+    
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
     }
 }

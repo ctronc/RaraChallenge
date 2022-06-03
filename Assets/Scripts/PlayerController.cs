@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        // sets spawn y position for transform
+        transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+        
         _playerInput = new PlayerInput();
         _characterController = GetComponent<CharacterController>();
         
@@ -27,6 +30,11 @@ public class PlayerController : MonoBehaviour
 
         _playerInput.CharacterControls.Jump.started += OnJump;
         _playerInput.CharacterControls.Jump.canceled += OnJump;
+    }
+    
+    private void OnEnable()
+    {
+        _playerInput.CharacterControls.Enable();
     }
     
     void Update()
@@ -58,11 +66,6 @@ public class PlayerController : MonoBehaviour
     private void OnJump(InputAction.CallbackContext context)
     {
         _isJumpPressed = context.ReadValueAsButton();
-    }
-
-    private void OnEnable()
-    {
-        _playerInput.CharacterControls.Enable();
     }
 
     private void OnDisable()

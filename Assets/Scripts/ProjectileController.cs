@@ -19,11 +19,6 @@ public class ProjectileController : MonoBehaviour
         GameStateManager.OnLevelClear += DestroySelf;
     }
 
-    private void OnDisable()
-    {
-        GameStateManager.OnLevelClear -= DestroySelf;
-    }
-
     void Update()
     {
         transform.Translate(Vector3.forward * Time.deltaTime * _projectileSpeed);
@@ -64,5 +59,10 @@ public class ProjectileController : MonoBehaviour
     private void DestroySelf()
     {
         Destroy(gameObject);
+    }
+    
+    private void OnDisable()
+    {
+        GameStateManager.OnLevelClear -= DestroySelf;
     }
 }

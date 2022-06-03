@@ -15,42 +15,43 @@ public class ChaserController : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private bool _isChasing;
     
-    private void OnEnable()
-    {
-        GameStateManager.OnGameReset += ResetState;
-    }
-
-    private void OnDisable()
-    {
-        GameStateManager.OnGameReset -= ResetState;
-    }
-
     private void Awake()
     {
+        // sets spawn y position for transform
+        transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+        
         _targetObject = GameObject.Find("Player");
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _isChasing = false;
         _startingPosition = transform.position;
     }
     
+    private void OnEnable()
+    {
+        GameStateManager.OnGameReset += ResetState;
+    }
+
     void Update()
     {
-        float distance = Vector3.Distance(transform.position, _targetObject.transform.position);
+        if (_targetObject != null)
+        {
+            float distance = Vector3.Distance(transform.position, _targetObject.transform.position);
 
-        if (distance < chaseStartDistance)
-        {
-            _isChasing = true;
-            _navMeshAgent.isStopped = false;
-        }
+            if (distance < chaseStartDistance)
+            {
+                _isChasing = true;
+                _navMeshAgent.isStopped = false;
+            }
 
-        if ((distance < chaseStopDistance) && _isChasing)
-        {
-            _navMeshAgent.destination = _targetObject.transform.position;
-        }
-        else if ((distance >= chaseStopDistance) && _isChasing)
-        {
-            _isChasing = false;
-            _navMeshAgent.isStopped = true;
+            if ((distance < chaseStopDistance) && _isChasing)
+            {
+                _navMeshAgent.destination = _targetObject.transform.position;
+            }
+            else if ((distance >= chaseStopDistance) && _isChasing)
+            {
+                _isChasing = false;
+                _navMeshAgent.isStopped = true;
+            }
         }
     }
 
@@ -61,5 +62,10 @@ public class ChaserController : MonoBehaviour
         _navMeshAgent.enabled = false;
         transform.position = _startingPosition;
         _navMeshAgent.enabled = true;
+    }
+    
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
     }
 }

@@ -11,6 +11,7 @@ TagManager:
   - Chaser
   - Wanderer
   - Projectile
+  - Floor
   layers:
   - Default
   - TransparentFX

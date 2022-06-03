@@ -15,6 +15,7 @@ public class PlayerState : MonoBehaviour
     private Vector3 _startingPosition;
     private int _startingHealth;
 
+    private bool _playerDisplayed;
     private bool _hasDied;
     
     public delegate void PlayerAction();
@@ -27,21 +28,14 @@ public class PlayerState : MonoBehaviour
         _startingPosition = transform.position;
         _startingHealth = playerHealth;
         _hasDied = false;
-        
-        Debug.Log("Stored position for player: ");
-        Debug.Log(_startingPosition);
     }
     
     private void OnEnable()
     {
         GameStateManager.OnGameReset += ResetState;
+        GameStateManager.OnLevelClear += ClearPlayer;
     }
 
-    private void OnDisable()
-    {
-        GameStateManager.OnGameReset -= ResetState;
-    }
-    
     void Update()
     {
         if (playerHealth <= 0 && _hasDied == false)
@@ -82,6 +76,35 @@ public class PlayerState : MonoBehaviour
         }
     }
 
+    public void DisplayPlayer()
+    {
+        _playerDisplayed = true;
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
+    private void ClearPlayer()
+    {
+        _playerDisplayed = false;
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    public bool GetPlayerDisplayedState()
+    {
+        return _playerDisplayed;
+    }
+
+    public void SetPlayerPosition(Vector3 newPosition)
+    {
+        _characterController.enabled = false;
+        transform.position = newPosition;
+        _startingPosition = newPosition;
+        _characterController.enabled = true;
+    }
+
+    public void SetPlayerYPosition()
+    {
+        transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+    }
+
     private void ResetState()
     {
         _characterController.enabled = false;
@@ -90,5 +113,11 @@ public class PlayerState : MonoBehaviour
         
         playerHealth = _startingHealth;
         _hasDied = false;
+    }
+    
+    private void OnDisable()
+    {
+        GameStateManager.OnGameReset -= ResetState;
+        GameStateManager.OnLevelClear -= ClearPlayer;
     }
 }

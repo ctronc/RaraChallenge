@@ -55,6 +55,11 @@ public class ProjectileController : MonoBehaviour
     {
         _projectileDamage = damage;
     }
+    
+    public int GetDamage()
+    {
+        return _projectileDamage;
+    }
 
     private void DestroySelf()
     {

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MineController : MonoBehaviour
 {
+    [SerializeField] private int mineDamage;
+    
     private void Awake()
     {
         // sets spawn y position for transform
@@ -17,10 +19,16 @@ public class MineController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // 'explode' mine when player touches it
         if (other.CompareTag("Player"))
         {
             transform.GetChild(0).gameObject.SetActive(false);
         }
+    }
+
+    public int GetDamage()
+    {
+        return mineDamage;
     }
 
     private void ResetState()

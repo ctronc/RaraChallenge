@@ -8,16 +8,8 @@ public class PlayerState : MonoBehaviour
     [SerializeField] private int playerHealth;
     private CharacterController _characterController;
 
-    // replace with scriptableobject!!
-    private int _projectileDamage = 20;
-    private int _wandererDamage = 100;
-    private int _chaserDamage = 100;
-    private int _mineDamage = 100;
-    
     private Vector3 _startingPosition;
     private int _startingHealth;
-
-    private bool _playerDisplayed;
     private bool _hasDied;
     
     public delegate void PlayerAction();
@@ -52,28 +44,34 @@ public class PlayerState : MonoBehaviour
     {
         if (playerHealth > 0)
         {
+            int enemyDamage;
+            
             if (other.CompareTag("Projectile"))
             {
-                playerHealth -= _projectileDamage;
-                Debug.Log("Projectile hit -> player health: " + playerHealth);
+                enemyDamage = other.transform.parent.gameObject.GetComponent<ProjectileController>().GetDamage();
+                playerHealth -= enemyDamage;
+                Debug.Log("Projectile hit, damage: " + enemyDamage + " -> player health: " + playerHealth);
             }
 
             if (other.CompareTag("Wanderer"))
             {
-                playerHealth -= _wandererDamage;
-                Debug.Log("Wanderer hit -> player health: " + playerHealth);
+                enemyDamage = other.transform.parent.gameObject.GetComponent<WandererController>().GetDamage();
+                playerHealth -= enemyDamage;
+                Debug.Log("Wanderer hit, damage: " + enemyDamage + " -> player health: " + playerHealth);
             }
 
             if (other.CompareTag("Mine"))
             {
-                playerHealth -= _mineDamage;
-                Debug.Log("Mine hit -> player health: " + playerHealth);
+                enemyDamage = other.transform.parent.gameObject.GetComponent<MineController>().GetDamage();
+                playerHealth -= enemyDamage;
+                Debug.Log("Mine hit, damage: " + enemyDamage + " -> player health: " + playerHealth);
             }
 
             if (other.CompareTag("Chaser"))
             {
-                playerHealth -= _chaserDamage;
-                Debug.Log("Chaser hit -> player health: " + playerHealth);
+                enemyDamage = other.transform.parent.gameObject.GetComponent<ChaserController>().GetDamage();
+                playerHealth -= enemyDamage;
+                Debug.Log("Chaser hit, damage: " + enemyDamage + " -> player health: " + playerHealth);
             }
 
             if (other.CompareTag("Flag"))
@@ -86,18 +84,11 @@ public class PlayerState : MonoBehaviour
 
     public void DisplayPlayer()
     {
-        _playerDisplayed = true;
         transform.GetChild(0).gameObject.SetActive(true);
     }
     private void ClearPlayer()
     {
-        _playerDisplayed = false;
         transform.GetChild(0).gameObject.SetActive(false);
-    }
-
-    public bool GetPlayerDisplayedState()
-    {
-        return _playerDisplayed;
     }
 
     public void SetPlayerPosition(Vector3 newPos)

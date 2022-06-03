@@ -49,6 +49,11 @@ public class WandererController : MonoBehaviour
 
         return navHit.position;
     }
+    
+    public int GetDamage()
+    {
+        return wandererDamage;
+    }
 
     private void ResetState()
     {

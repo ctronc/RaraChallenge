@@ -54,6 +54,11 @@ public class ChaserController : MonoBehaviour
             }
         }
     }
+    
+    public int GetDamage()
+    {
+        return chaserDamage;
+    }
 
     private void ResetState()
     {

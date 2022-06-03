@@ -30,25 +30,16 @@ public class GameStateManager : MonoBehaviour
     
     private void Awake()
     {
-        SubscribeToEvents();
-        _playerScore = 0; // has to be set when entering play mode, not here
         _gameState = GameState.Build;
         playAgainButton.gameObject.SetActive(false);
         EnterBuildMode();
     }
 
-    private void SubscribeToEvents()
+    private void OnEnable()
     {
         PlayerState.OnPlayerWin += PlayerWin;
         PlayerState.OnPlayerDeath += GameOver;
         CoinController.OnCoinTouch += IncreaseScore;
-    }
-
-    private void UnsubscribeFromEvents()
-    {
-        PlayerState.OnPlayerWin -= PlayerWin;
-        PlayerState.OnPlayerDeath -= GameOver;
-        CoinController.OnCoinTouch -= IncreaseScore;
     }
 
     public void EnterBuildMode()
@@ -65,14 +56,13 @@ public class GameStateManager : MonoBehaviour
         Time.timeScale = 0;
         ResetGameState();
         
-        // Enable object placing
-
+        Debug.Log("Build mode activated");
     }
 
     public void EnterPlayMode()
     {
-        // Check if there's a player and a flag at least
         _gameState = GameState.Play;
+        _playerScore = 0;
         OnPlayMode?.Invoke();
         
         buildModeUI.SetActive(false);
@@ -82,6 +72,8 @@ public class GameStateManager : MonoBehaviour
         gameModeText.text = "Mode: Play";
         
         Time.timeScale = 1;
+        
+        Debug.Log("Play mode activated");
     }
 
     public void ClearLevel()
@@ -123,7 +115,7 @@ public class GameStateManager : MonoBehaviour
         scoreText.text = "Score: " + _playerScore;
     }
 
-    public void PlayAgain()
+    public void Retry()
     {
         if (_gameState != GameState.Play)
         {
@@ -132,6 +124,8 @@ public class GameStateManager : MonoBehaviour
             gameModeText.text = "Mode: Play";
             
             ResetGameState();
+            
+            Debug.Log("Retrying. Good luck!");
         }
     }
 
@@ -147,6 +141,8 @@ public class GameStateManager : MonoBehaviour
 
     private void OnDisable()
     {
-        UnsubscribeFromEvents();
+        PlayerState.OnPlayerWin -= PlayerWin;
+        PlayerState.OnPlayerDeath -= GameOver;
+        CoinController.OnCoinTouch -= IncreaseScore;
     }
 }

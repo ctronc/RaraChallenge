@@ -10,6 +10,7 @@ public class TurretController : MonoBehaviour
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float startDelay;
     [SerializeField] private float firingRate;
+    [SerializeField] private float turretRotation;
     
     private ProjectileController _projectileController;
     private ProjectilePool _projectilePool;
@@ -25,6 +26,8 @@ public class TurretController : MonoBehaviour
         _myTransform = transform;
         _cannonPos = cannonGameObject.transform.position;
         _projectilePool = GetComponent<ProjectilePool>();
+        
+        transform.Rotate(0, turretRotation, 0, Space.Self);
     }
     
     private void OnEnable()

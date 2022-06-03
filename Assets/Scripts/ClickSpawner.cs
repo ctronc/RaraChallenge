@@ -11,6 +11,9 @@ public class ClickSpawner : MonoBehaviour
     [SerializeField] private GameObject wandererPrefab;
     [SerializeField] private GameObject chaserPrefab;
     [SerializeField] private GameObject turretPrefab;
+    [SerializeField] private GameObject lowBlockPrefab;
+    [SerializeField] private GameObject highBlockPrefab;
+    [SerializeField] private GameObject minePrefab;
     [SerializeField] private GameObject userLevel;
     
     private Camera _mainCamera;
@@ -78,6 +81,9 @@ public class ClickSpawner : MonoBehaviour
             "wanderer" => wandererPrefab,
             "chaser" => chaserPrefab,
             "turret" => turretPrefab,
+            "lowblock" => lowBlockPrefab,
+            "highblock" => highBlockPrefab,
+            "mine" => minePrefab,
             _ => null
         };
 

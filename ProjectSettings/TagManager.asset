@@ -12,6 +12,7 @@ TagManager:
   - Wanderer
   - Projectile
   - Floor
+  - Mine
   layers:
   - Default
   - TransparentFX

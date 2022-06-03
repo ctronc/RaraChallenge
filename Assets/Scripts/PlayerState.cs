@@ -12,6 +12,7 @@ public class PlayerState : MonoBehaviour
     private int _projectileDamage = 20;
     private int _wandererDamage = 100;
     private int _chaserDamage = 100;
+    private int _mineDamage = 100;
     
     private Vector3 _startingPosition;
     private int _startingHealth;
@@ -61,6 +62,12 @@ public class PlayerState : MonoBehaviour
             {
                 playerHealth -= _wandererDamage;
                 Debug.Log("Wanderer hit -> player health: " + playerHealth);
+            }
+
+            if (other.CompareTag("Mine"))
+            {
+                playerHealth -= _mineDamage;
+                Debug.Log("Mine hit -> player health: " + playerHealth);
             }
 
             if (other.CompareTag("Chaser"))
